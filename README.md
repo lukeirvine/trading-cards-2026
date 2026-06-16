@@ -1,4 +1,4 @@
-# Trading Cards Generator 2025
+# Trading Cards Generator 2026
 
 A Python-based system for generating custom trading cards with staff information from a csv file. The intent is to accumulate a library of helpful methods for adding text and images to a Pillow canvas, so minimal work is needed to design trading cards in future years.
 
@@ -41,7 +41,7 @@ curl -sSL https://install.python-poetry.org | python3 -
 
 ```bash
 git clone [repository-url]
-cd trading-cards-2025
+cd trading-cards-2026
 ```
 
 2. Create and activate a virtual environment:
@@ -60,7 +60,7 @@ poetry install
 ## Project Structure
 
 ```
-TRADING-CARDS-2025/
+TRADING-CARDS-2026/
 ├── .vscode/
 │   └── settings.json
 ├── fonts/ # font files referenced in src/trading_cards/utils/constants
@@ -96,7 +96,6 @@ TRADING-CARDS-2025/
 ## Usage
 
 1. Prepare your staff data in CSV format with the following columns:
-
    - `image_path`
      - The file name of the image of the staff member.
    - `name`
