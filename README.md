@@ -135,10 +135,10 @@ A pre-commit script is configured to run on each commit and will only permit com
 
 Often, a commit will fail, but black and/or isort will make necessary changes for you, and you can create a successful commit by simply running the commit command again.
 
-## For 2026 Trading Cards:
+## For 2027 Trading Cards:
 
-1. Create a new repo for 2026
-2. Clone this repo, copy the code to a new dir, link up with the new 2026 repo.
+1. Create a new repo for 2027
+2. Clone this repo, copy the code to a new dir, link up with the new 2027 repo.
 3. Edit the files in `src/trading_cards/card`, taking advantage of the methods in
    `src/trading_cards/builder` and `src/trading_cards/utils`.
 
