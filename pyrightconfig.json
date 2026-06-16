@@ -1,0 +1,8 @@
+{
+  "typeCheckingMode": "strict",
+  "reportUnusedTypeIgnoreComment": false,
+  // bring across any other `python.analysis.*` overrides …
+  "executionEnvironments": [{ "root": "." }],
+  "venvPath": ".",
+  "venv": ".venv"
+}
