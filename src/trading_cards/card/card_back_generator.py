@@ -13,7 +13,7 @@ from trading_cards.utils.types import ProseData, TextType
 class CardBackGenerator:
     def __init__(self, staff_member: StaffMember) -> None:
         self.staff_member: StaffMember = staff_member
-        size: Tuple[int, int] = (constants.CARD_WIDTH, constants.CARD_HEIGHT)
+        size: Tuple[int, int] = (constants.PRINT_WIDTH, constants.PRINT_HEIGHT)
         self.canvas = Image.new("RGB", size, color=(255, 255, 255))
 
     def get_card_back(self) -> Image.Image:
@@ -24,8 +24,9 @@ class CardBackGenerator:
                 constants.MATERIAL_PATH,
                 f"{self.staff_member.department.label}_back.png",
             ),
-            (constants.CARD_WIDTH, constants.CARD_HEIGHT),
+            (constants.PRINT_WIDTH, constants.PRINT_HEIGHT),
             (0, 0),
+            object_fit="fill",
         )
 
         body_text: ProseData = []
@@ -33,11 +34,14 @@ class CardBackGenerator:
             body_text.append({"text": question["question"], "type": TextType.h3})
             body_text.append({"text": question["answer"], "type": TextType.body})
 
-        body_start_pos = 180
+        body_start_pos = 240
         TextBuilder.add_body_to_canvas(
             text=body_text,
             canvas=self.canvas,
-            position=(constants.BACK_MARGIN_HORIZONTAL, body_start_pos),
+            position=(
+                (constants.PRINT_WIDTH - constants.CARD_WIDTH) // 2 + constants.BACK_MARGIN_HORIZONTAL,
+                body_start_pos,
+            ),
             max_width=constants.CARD_WIDTH - constants.BACK_MARGIN_HORIZONTAL * 2,
             max_height=constants.CARD_HEIGHT - constants.BACK_MARGIN_BOTTOM - body_start_pos,
             color=self.staff_member.department.text_color.value,

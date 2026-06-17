@@ -7,8 +7,8 @@ from trading_cards.utils.constants import constants
 # This should be used for different font types, not sizes.
 class TextType(Enum):
     h1 = ("h1", 60, constants.HEADING_FONT, 20, 1.2)
-    h2 = ("h2", 28, constants.HEADING_FONT, 12, 1.2)
-    h3 = ("h3", 25, constants.HEADING_FONT, 12, 1.2)
+    h2 = ("h2", 28, constants.SUBHEADING_FONT, 12, 1.2)
+    h3 = ("h3", 25, constants.H3_FONT, 12, 1.2)
     body = ("body", 20, constants.BODY_FONT, 30, 1.2)
 
     def __init__(
@@ -40,19 +40,19 @@ class TextColor(tuple[int, int, int], Enum):
 
 
 class Department(Enum):
-    leadership = ("leadership", (188, 214, 239), TextColor.black)
+    leadership = ("leadership", (188, 214, 239))
     extreme = ("extreme", (244, 160, 99))
     laundry = ("laundry", (188, 152, 198))
     office = ("office", (241, 115, 118))
     waterfront = ("waterfront", (69, 125, 152))
-    activities = ("activities", (217, 230, 148), TextColor.black)
-    art = ("art", (241, 201, 225), TextColor.black)
-    challenge = ("challenge", (194, 199, 167), TextColor.black)
+    activities = ("activities", (217, 230, 148))
+    art = ("art", (241, 201, 225))
+    challenge = ("challenge", (194, 199, 167))
     communications = ("communications", (97, 105, 152))
     equestrian = ("equestrian", (89, 52, 25))
     kitchen = ("kitchen", (7, 45, 45))
     maintenance = ("maintenance", (139, 57, 61))
-    programming = ("programming", (254, 235, 179), TextColor.black)
+    programming = ("programming", (254, 235, 179))
     lifeguard = ("lifeguard", (226, 34, 39))
     null = ("null", (0, 0, 0))
 

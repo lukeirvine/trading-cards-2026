@@ -85,6 +85,7 @@ class TextBuilder:
         canvas: Image.Image,
         type: TextType,
         vertical_align: str = "top",
+        align: str = "left",
         max_lines: Optional[int] = None,
         max_width: Optional[int] = None,
         max_height: int = 0,
@@ -108,6 +109,9 @@ class TextBuilder:
                 local_max_width = canvas.width - position[0]
             avg_char_width = get_text_size("W" * 10, font)[0] / 10
             return int(local_max_width // avg_char_width) - 1
+
+        # Capture container width for centering before max_width may be overwritten
+        centering_width = max_width if max_width is not None else (canvas.width - position[0])
 
         # Calculate wrap width
         # If no max_width provided, default to remaining canvas width
@@ -173,7 +177,7 @@ class TextBuilder:
             )
 
         if not skip_draw:
-            TextBuilder.draw_lines_on_canvas(canvas, wrapped_lines, font, type, position, color)
+            TextBuilder.draw_lines_on_canvas(canvas, wrapped_lines, font, type, position, color, align, centering_width)
 
         return {
             "line_count": len(wrapped_lines),
@@ -208,11 +212,17 @@ class TextBuilder:
         textType: TextType,
         position: tuple[int, int] = (0, 0),
         color: tuple[int, int, int] = (0, 0, 0),
+        align: str = "left",
+        container_width: Optional[int] = None,
     ) -> None:
         draw: ImageDraw.ImageDraw = ImageDraw.Draw(canvas)
         pos = list(position)
         for line in lines:
-            draw.text(tuple(pos), line, font=font, fill=color)  # type: ignore[reportUnknownArgumentType]
+            x = pos[0]
+            if align == "center" and container_width is not None:
+                line_width = TextBuilder.get_text_size(draw, line, font)[0]
+                x = pos[0] + (container_width - line_width) // 2
+            draw.text((x, pos[1]), line, font=font, fill=color)  # type: ignore[reportUnknownArgumentType]
             pos[1] += int(
                 TextBuilder.get_text_size(draw, line, font)[1] * textType.leading
-            )  # Move down for the next line
+            )

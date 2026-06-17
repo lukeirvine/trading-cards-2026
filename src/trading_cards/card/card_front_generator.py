@@ -14,7 +14,7 @@ class CardFrontGenerator:
     def __init__(self, staff_member: StaffMember, image_dir: str) -> None:
         self.staff_member: StaffMember = staff_member
         self.image_dir: str = image_dir
-        size: Tuple[int, int] = (constants.CARD_WIDTH, constants.CARD_HEIGHT)
+        size: Tuple[int, int] = (constants.PRINT_WIDTH, constants.PRINT_HEIGHT)
         self.canvas = Image.new("RGB", size, color=(255, 255, 255))
 
     def get_card_face(self) -> Image.Image:
@@ -36,8 +36,10 @@ class CardFrontGenerator:
                 constants.MATERIAL_PATH,
                 border_file_name,
             ),
-            (constants.CARD_WIDTH, constants.CARD_HEIGHT),
+            (constants.PRINT_WIDTH, constants.PRINT_HEIGHT),
             (0, 0),
+            None,
+            "fill",
         )
 
         # Add position to card.
@@ -45,10 +47,15 @@ class CardFrontGenerator:
             text=self.staff_member.position,
             canvas=self.canvas,
             type=TextType.h2,
-            position=(constants.FRONT_MARGIN_HORIZONTAL, 885),
-            max_width=425,
+            position=(
+                round((constants.PRINT_WIDTH - constants.CARD_WIDTH) / 2 + constants.FRONT_MARGIN_HORIZONTAL),
+                985,
+            ),
+            max_width=round(constants.CARD_WIDTH - constants.FRONT_MARGIN_HORIZONTAL * 2),
             max_lines=1,
             vertical_align="center",
+            align="center",
+            color=self.staff_member.department.text_color.value,
         )
 
         # Add name to card.
@@ -56,26 +63,30 @@ class CardFrontGenerator:
             text=self.staff_member.name,
             canvas=self.canvas,
             type=TextType.h1,
-            position=(constants.FRONT_MARGIN_HORIZONTAL, 950),
-            max_width=675,
+            position=(
+                round((constants.PRINT_WIDTH - constants.CARD_WIDTH) / 2 + constants.FRONT_MARGIN_HORIZONTAL),
+                875,
+            ),
+            max_width=round(constants.CARD_WIDTH - constants.FRONT_MARGIN_HORIZONTAL * 2),
             max_lines=1,
             vertical_align="center",
+            align="center",
             color=self.staff_member.department.text_color.value,
         )
 
         # Stars
         star_count = self.staff_member.years_worked
-        if star_count > 13:
-            star_count = 13
+        if star_count > 12:
+            star_count = 12
         for i in range(0, star_count):
-            star_size = 55
+            star_size = 50
             increment = star_size - 3
             ImageBuilder.add_mask_to_canvas(
                 canvas=self.canvas,
                 mask_path=os.path.join(constants.MATERIAL_PATH, "star.png"),
                 size=(star_size, star_size),
-                position=(11, 150 + i * increment),
-                fill=self.staff_member.department.text_color.value,
+                position=(79, 198 + i * increment),
+                fill=(255, 255, 255),
             )
 
         return self.canvas

@@ -1,4 +1,4 @@
-from typing import Optional
+from typing import Literal, Optional
 
 from PIL import Image
 
@@ -10,9 +10,13 @@ class ImageBuilder:
         image_path: str,
         size: tuple[int, int],
         position: tuple[int, int],
+        object_fit: Literal["contain", "fill"] = "contain",
     ) -> None:
         image = Image.open(image_path)
-        image_canvas: Image.Image = ImageBuilder.resize_and_crop_image(image, size)
+        if object_fit == "fill":
+            image_canvas: Image.Image = image.resize(size, Image.Resampling.LANCZOS)
+        else:
+            image_canvas: Image.Image = ImageBuilder.resize_and_crop_image(image, size)
         canvas.paste(image_canvas, position)
 
     @staticmethod
@@ -22,11 +26,14 @@ class ImageBuilder:
         size: tuple[int, int],
         position: tuple[int, int],
         fill: Optional[tuple[int, int, int]] = None,
+        object_fit: Literal["contain", "fill"] = "contain",
     ) -> None:
         # Open the mask image with an alpha channel
         image = Image.open(mask_path).convert("RGBA")
-        # Resize/crop to the desired size
-        image = ImageBuilder.resize_and_crop_image(image, size)
+        if object_fit == "fill":
+            image = image.resize(size, Image.Resampling.LANCZOS)
+        else:
+            image = ImageBuilder.resize_and_crop_image(image, size)
         # Use the image’s own alpha channel as the mask
         alpha = image.split()[-1]
         if fill is not None:
