@@ -44,17 +44,10 @@ git clone [repository-url]
 cd trading-cards-2026
 ```
 
-2. Create and activate a virtual environment:
+2. Install Python dependencies (Poetry will create a `.venv` in the project root automatically):
 
 ```bash
-python3 -m venv venv
-source venv/bin/activate  # On Windows, use: venv\Scripts\activate
-```
-
-3. Install Python dependencies:
-
-```bash
-poetry install
+poetry install --with dev
 ```
 
 ## Project Structure
@@ -120,13 +113,13 @@ TRADING-CARDS-2026/
 4. Run the application:
 
 ```bash
-python src/trading_cards/main.py
+poetry run python src/trading_cards/main.py
 ```
 
 5. Run in watch mode:
 
 ```bash
-python watcher.py
+poetry run python watcher.py
 ```
 
 ## Contributing
