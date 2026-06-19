@@ -19,28 +19,34 @@ class CardFrontGenerator:
 
     def get_card_face(self) -> Image.Image:
         # Add main image to card
+        scale = 0.9
         ImageBuilder.add_image_to_canvas(
             self.canvas,
             os.path.join(self.image_dir, self.staff_member.image_path),
-            (constants.CARD_WIDTH, constants.CARD_HEIGHT),
-            (0, 0),
+            (int(constants.CARD_WIDTH * scale), int(constants.CARD_HEIGHT * scale)),
+            (
+                (constants.PRINT_WIDTH - int(constants.CARD_WIDTH * scale)) // 2,
+                0,
+            ),
         )
 
         # Add border to card
         border_file_name = (
             self.staff_member.optional_front_file or f"{self.staff_member.department.label}_front.png"
         )
-        ImageBuilder.add_mask_to_canvas(
-            self.canvas,
-            os.path.join(
-                constants.MATERIAL_PATH,
-                border_file_name,
-            ),
-            (constants.PRINT_WIDTH, constants.PRINT_HEIGHT),
-            (0, 0),
-            None,
-            "fill",
-        )
+        if True:
+            ImageBuilder.add_mask_to_canvas(
+                self.canvas,
+                os.path.join(
+                    constants.MATERIAL_PATH,
+                    border_file_name,
+                ),
+                (constants.PRINT_WIDTH, constants.PRINT_HEIGHT),
+                (0, 0),
+                None,
+                "fill",
+                opacity=1,
+            )
 
         # Add position to card.
         TextBuilder.add_text_to_canvas(
@@ -85,7 +91,7 @@ class CardFrontGenerator:
                 canvas=self.canvas,
                 mask_path=os.path.join(constants.MATERIAL_PATH, "star.png"),
                 size=(star_size, star_size),
-                position=(79, 198 + i * increment),
+                position=(79, 205 + i * increment),
                 fill=(255, 255, 255),
             )
 

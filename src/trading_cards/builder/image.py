@@ -1,6 +1,6 @@
 from typing import Literal, Optional
 
-from PIL import Image
+from PIL import Image, ImageChops
 
 
 class ImageBuilder:
@@ -27,6 +27,7 @@ class ImageBuilder:
         position: tuple[int, int],
         fill: Optional[tuple[int, int, int]] = None,
         object_fit: Literal["contain", "fill"] = "contain",
+        opacity: float = 1.0,
     ) -> None:
         # Open the mask image with an alpha channel
         image = Image.open(mask_path).convert("RGBA")
@@ -34,8 +35,11 @@ class ImageBuilder:
             image = image.resize(size, Image.Resampling.LANCZOS)
         else:
             image = ImageBuilder.resize_and_crop_image(image, size)
-        # Use the image’s own alpha channel as the mask
+        # Use the image’s own alpha channel as the mask, scaled by opacity
         alpha = image.split()[-1]
+        if opacity != 1.0:
+            scale = Image.new("L", alpha.size, int(255 * opacity))
+            alpha = ImageChops.multiply(alpha, scale)
         if fill is not None:
             # Create a solid color image with the same size, apply the original alpha
             solid = Image.new("RGBA", image.size, fill + (0,))
